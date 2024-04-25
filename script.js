@@ -38,8 +38,6 @@ function handleEvents(event) {
       window.location.href = "index.html";
       break;
   }
-
-  //   console.log(event.data);
 }
 
 window.addEventListener("message", handleEvents);
