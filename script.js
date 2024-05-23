@@ -1,7 +1,3 @@
-// window.load = function () {
-// alert("Hello");
-// };
-
 function handleEvents(event) {
   if (event.data?.source !== "tribecourses") {
     return;
@@ -15,12 +11,12 @@ function handleEvents(event) {
 
   switch (event.data?.type) {
     /* Called when the the course is first loaded */
-    case "ready":
+    case "ready": {
       window.scrollTo({ top: iframeOffset, behavior: "smooth" });
       break;
+    }
     /* The course is requesting that we scroll the page to a certain point */
-    case "scroll":
-      // Scroll to this position in the iframe
+    case "scroll": {
       const posY = event.data.position?.top;
 
       // Scroll to the given position, taking the position of the iframe into account
@@ -29,17 +25,33 @@ function handleEvents(event) {
         top: scrollY,
         behavior: "smooth",
       });
+
       break;
+    }
     /* The size of the content has changed */
-    case "resize":
+    case "resize": {
       const height = event.data?.size?.height || 900;
       document.getElementById(
         "tribe-training-iframe"
       ).style.height = `${height}px`;
       break;
-    case "close":
+    }
+    /* Scroll to the top of the page after changing page (give the animation enough time ot finish first) */
+    case "page-forward":
+    case "page-back": {
+      setTimeout(() => {
+        window.scrollTo({
+          top: iframeOffset,
+          behavior: "smooth",
+        });
+      }, 600);
+
+      break;
+    }
+    case "close": {
       window.location.href = "index.html";
       break;
+    }
   }
 }
 
